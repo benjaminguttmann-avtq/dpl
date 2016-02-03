@@ -23,8 +23,12 @@ module DPL
       end
 
       def push_app
-        context.shell "./cf push#{manifest}"
-        context.shell "./cf logout"
+        if context.shell "./cf push#{manifest}"
+          context.shell "./cf logout"
+        else
+          context.shell "./cf logout"
+          context.die("deploy failed")
+        end
       end
 
       def cleanup
